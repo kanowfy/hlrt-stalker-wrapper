@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wrapper Demo</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="formContainer">
+      <a href="/index.html" class="backBtn">Back</a>
+      <h1 class="title">HLRT Wrapper</h1>
+      <form class="form">
+        <div>
+          <label>Page url: <input type="text" name="url" /></label>
+          <br />
+          <br />
+          <label>Tuple: <input type="text" name="tuple" /></label>
+          <br />
+          <br />
+          <div class="submitContainer">
+            <button type="submit" class="submitBtn">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <hr />
+    <div id="outputContainer">
+      <p>Output:</p>
+      <ul id="output"></ul>
+    </div>
+
+    <script>
+      const form = document.querySelector(".form");
+      const output = document.querySelector("#output");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const url = formData.get("url");
+        const tuple = formData.get("tuple");
+        const resp = await fetch("http://localhost:8080/hlrt", {
+          method: "POST",
+          body: JSON.stringify({
+            url: url,
+            tuple: tuple,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const data = await resp.json();
+        console.log(data);
+
+        displayOutput(data);
+      });
+
+      function displayOutput(attributes) {
+        const outputList = document.querySelector("#output");
+        for (const elem of attributes) {
+          const attribute = document.createElement("li");
+          attribute.appendChild(document.createTextNode(elem));
+          outputList.appendChild(attribute);
+        }
+      }
+    </script>
+  </body>
+</html>

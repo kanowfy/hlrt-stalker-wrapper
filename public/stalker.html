@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wrapper Demo</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="formContainer">
+      <a href="/index.html" class="backBtn">Back</a>
+      <h1 class="title">Stalker Wrapper</h1>
+      <form class="form">
+        <div>
+          <label
+            ><b>Page url: &emsp;&ensp;</b><input type="text" name="url"
+          /></label>
+          <br />
+          <br />
+          <label
+            ><b>Attribute #: </b
+            ><input type="text" name="attrNum" id="attrNum" />
+            <button id="attrBtn" type="button" onclick="addContext()">
+              Generate
+            </button></label
+          >
+          <br />
+          <br />
+          <div id="contextContainer"></div>
+          <br />
+          <br />
+          <div class="submitContainer">
+            <button type="submit" id="submitBtn" disabled>Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <hr />
+    <div id="outputContainer">
+      <p>Output:</p>
+      <ul id="output"></ul>
+    </div>
+
+    <script>
+      const form = document.querySelector(".form");
+      const output = document.querySelector("#output");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const payload = {};
+        for (const entry of formData.entries()) {
+          payload[entry[0]] = entry[1];
+        }
+
+        const resp = await fetch("http://localhost:8080/stalker", {
+          method: "POST",
+          body: JSON.stringify(payload),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const data = await resp.json();
+        displayOutput(data.attributes);
+      });
+
+      function displayOutput(attributes) {
+        const outputList = document.querySelector("#output");
+        for (const elem of attributes) {
+          const attribute = document.createElement("li");
+          attribute.appendChild(document.createTextNode(elem));
+          outputList.appendChild(attribute);
+        }
+      }
+
+      function addContext() {
+        const number = document.querySelector("#attrNum").value;
+        const container = document.querySelector("#contextContainer");
+
+        while (container.hasChildNodes()) {
+          container.removeChild(container.lastChild);
+        }
+
+        for (let i = 0; i < number; i++) {
+          container.appendChild(document.createTextNode("#" + (i + 1)));
+          container.appendChild(document.createElement("br"));
+
+          container.appendChild(document.createTextNode("Start: "));
+          const start = document.createElement("input");
+          start.type = "text";
+          start.name = "start" + i;
+          container.appendChild(start);
+          container.appendChild(document.createElement("br"));
+
+          container.appendChild(document.createTextNode("End: "));
+          const end = document.createElement("input");
+          end.type = "text";
+          end.name = "end" + i;
+          container.appendChild(end);
+
+          container.appendChild(document.createElement("br"));
+          container.appendChild(document.createElement("br"));
+        }
+
+        document.querySelector("#submitBtn").disabled = false;
+      }
+    </script>
+  </body>
+</html>
