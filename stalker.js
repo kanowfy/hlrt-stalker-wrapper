@@ -18,14 +18,12 @@ async function stalker(req) {
 
         attributes.push(stripped.substring(0, stripped.indexOf(rule.endContext[0])));
     }
-    console.log(attributes);
 
     return {
         attributes: attributes
     };
 }
 
-// SkipTo(#Data), SkipTo(#Data)
 function parseContext(context, isStart) {
     const commandParts = context.split(',');
     const commands = [];

@@ -4,10 +4,7 @@ async function hlrt(url, tuple) {
     const body = await utils.fetchContent(url);
 
     const parsedTuple = parseTuple(tuple);
-    console.log(parsedTuple);
-    // remove head and tail
     const strippedBody = utils.extractData(body, parsedTuple.head, parsedTuple.tail);
-    console.log("stripped body: ", strippedBody);
 
     const attributes = [];
 
@@ -20,7 +17,6 @@ async function hlrt(url, tuple) {
     };
 }
 
-// parseTuple takes a tuple string and return an array of delimiters
 function parseTuple(tuple) {
     const tupArray = tuple.split(",");
     return {

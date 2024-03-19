@@ -9,14 +9,7 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname, "public")));
 
-// We need URL, head, tail, one or more pair of delimiting tags
-// Output will be the extracted data between each pair
 app.post("/hlrt", async function (req, res) {
-    /*
-    console.log("got new req with url ", req.body.url);
-    const resp = await axios.get(req.body.url);
-    res.status(200).send(resp.data);
-     */
     console.log("got new request with body: ", req.body);
     await hlrt(req.body.url, req.body.tuple)
         .then(data => res.status(200).send(data))

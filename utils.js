@@ -6,7 +6,6 @@ async function fetchContent(url) {
 }
 
 function extractData(body, delimStart, delimEnd) {
-    //console.log("parsing ", body, delimStart, delimEnd);
     const startIdx = body.indexOf(delimStart);
     if (startIdx == -1) {
         throw new Error("invalid start delimiter: " + delimStart);
