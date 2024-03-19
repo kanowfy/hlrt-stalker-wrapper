@@ -7,14 +7,7 @@ async function fetchContent(url) {
 
 function extractData(body, delimStart, delimEnd) {
     const startIdx = body.indexOf(delimStart);
-    if (startIdx == -1) {
-        throw new Error("invalid start delimiter: " + delimStart);
-    }
-
     const endIdx = body.indexOf(delimEnd);
-    if (endIdx == -1) {
-        throw new Error("invalid end delimiter: " + delimEnd);
-    }
     return body.substring(startIdx + delimStart.length, endIdx).trim()
 }
 

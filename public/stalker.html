@@ -12,9 +12,7 @@
       <h1 class="title">Stalker Wrapper</h1>
       <form class="form">
         <div>
-          <label
-            ><b>Page url: &emsp;&ensp;</b><input type="text" name="url"
-          /></label>
+          <label><b>Page url: </b><input type="text" name="url" /></label>
           <br />
           <br />
           <label
@@ -38,14 +36,16 @@
     <hr />
     <div id="outputContainer">
       <p>Output:</p>
+      <p id="err"></p>
       <ul id="output"></ul>
     </div>
 
     <script>
       const form = document.querySelector(".form");
-      const output = document.querySelector("#output");
+      const outputList = document.querySelector("#output");
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
+        clearOutput();
         const formData = new FormData(e.target);
         const payload = {};
         for (const entry of formData.entries()) {
@@ -65,7 +65,6 @@
       });
 
       function displayOutput(attributes) {
-        const outputList = document.querySelector("#output");
         for (const elem of attributes) {
           const attribute = document.createElement("li");
           attribute.appendChild(document.createTextNode(elem));
@@ -103,6 +102,16 @@
         }
 
         document.querySelector("#submitBtn").disabled = false;
+      }
+
+      function clearOutput() {
+        while (outputList.firstChild) {
+          outputList.removeChild(outputList.firstChild);
+        }
+
+        while (err.firstChild) {
+          outputList.removeChild(outputList.firstChild);
+        }
       }
     </script>
   </body>

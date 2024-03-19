@@ -11,7 +11,6 @@ async function stalker(req) {
             endContext: parseContext(req["end" + i], false)
         };
 
-
         for (let cmd of rule.startContext) {
             stripped = stripped.substring(stripped.indexOf(cmd) + cmd.length);
         }

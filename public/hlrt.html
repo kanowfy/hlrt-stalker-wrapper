@@ -15,7 +15,10 @@
           <label>Page url: <input type="text" name="url" /></label>
           <br />
           <br />
-          <label>Tuple: <input type="text" name="tuple" /></label>
+          <label
+            >Tuple:
+            <textarea name="tuple" rows="4" cols="100"></textarea>
+          </label>
           <br />
           <br />
           <div class="submitContainer">
@@ -27,14 +30,18 @@
     <hr />
     <div id="outputContainer">
       <p>Output:</p>
+      <p id="err"></p>
       <ul id="output"></ul>
     </div>
 
     <script>
       const form = document.querySelector(".form");
-      const output = document.querySelector("#output");
+      const outputList = document.querySelector("#output");
+      const errOutput = document.querySelector("#err");
+
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
+        clearOutput();
         const formData = new FormData(e.target);
         const url = formData.get("url");
         const tuple = formData.get("tuple");
@@ -49,18 +56,30 @@
           },
         });
 
-        const data = await resp.json();
-        console.log(data);
-
-        displayOutput(data);
+        try {
+          const data = await resp.json();
+          console.log(data);
+          displayOutput(data.attributes);
+        } catch (err) {
+          errOutput.appendChild(document.createTextNode(err));
+        }
       });
 
       function displayOutput(attributes) {
-        const outputList = document.querySelector("#output");
         for (const elem of attributes) {
           const attribute = document.createElement("li");
           attribute.appendChild(document.createTextNode(elem));
           outputList.appendChild(attribute);
+        }
+      }
+
+      function clearOutput() {
+        while (outputList.firstChild) {
+          outputList.removeChild(outputList.firstChild);
+        }
+
+        while (err.firstChild) {
+          outputList.removeChild(outputList.firstChild);
         }
       }
     </script>
